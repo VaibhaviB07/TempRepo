@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"my_module/furtherexplored"
 )
 
 var x int = 9 // package scope declaration
@@ -32,7 +33,8 @@ func main() {
 
 	//the function/variable which we have to use in whole folder/package can be written as first letter capital
 	//syntax => package_name.function_name
-	//eg., furtherexplored.Fascinating() or furtherexplored.PlanetSpeed
+	//eg., furtherexplored.Fascinating() or furtherexplored.PlanetSpeed -> capitalized first letter means
+	//visible/visited or exported outside the package
 
 	//go commands
 	//go module command : go mod init github.com/VaibhaviB07/repo_name
@@ -44,4 +46,10 @@ func main() {
 	//GOOS=linux go build
 	//GOOS=windows go build
 	//go install -> adds the go executable file in go/bin folder
+	//go mod init module_name -> creates module
+	//go mod tidy -> add missing and remove unused modules
+
+	//function/variable call from another package and file inside it where function/variable first name is capitalized
+	furtherexplored.Fascinating()
+	println(furtherexplored.PlanetSpeed)
 }
