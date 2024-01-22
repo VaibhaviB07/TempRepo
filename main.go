@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"my_module/furtherexplored"
+
+	"github.com/VaibhaviB07/TempRepo/furtherexplored"
 )
 
 var x int = 9 // package scope declaration
@@ -48,8 +49,14 @@ func main() {
 	//go install -> adds the go executable file in go/bin folder
 	//go mod init module_name -> creates module
 	//go mod tidy -> add missing and remove unused modules
+	//go get github.com/VaibhaviB07/repo_name@latest -> fetches code from github and can be used in code
 
 	//function/variable call from another package and file inside it where function/variable first name is capitalized
 	furtherexplored.Fascinating()
 	println(furtherexplored.PlanetSpeed)
+
+	// git tag vN.N.N -> tags a certain commit (N is number)
+	//eg., git tag v1.4
+	//git show -> see tag data along with commit that was tagged eg., git show vN.N.N
+
 }
