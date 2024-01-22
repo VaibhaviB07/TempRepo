@@ -33,4 +33,15 @@ func main() {
 	//the function/variable which we have to use in whole folder/package can be written as first letter capital
 	//syntax => package_name.function_name
 	//eg., furtherexplored.Fascinating() or furtherexplored.PlanetSpeed
+
+	//go commands
+	//go module command : go mod init github.com/VaibhaviB07/repo_name
+	//go run ./... -> runs all the files in folder
+	//go build -> creates executable file -> ./file_name -> runs/executes the file
+	//go env GOARCH GOOS -> shows all environment variables
+	//run one of the followings at terminal to build to a certain OS :
+	//GOOS=darwin go build
+	//GOOS=linux go build
+	//GOOS=windows go build
+	//go install -> adds the go executable file in go/bin folder
 }
