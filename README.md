@@ -1,2 +1,2 @@
 # TempRepo
-My First Repository
+Golang Course Documentation
