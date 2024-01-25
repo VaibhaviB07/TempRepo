@@ -55,8 +55,8 @@ func main() {
 	furtherexplored.Fascinating()
 	println(furtherexplored.PlanetSpeed)
 
-	// git tag vN.N.N -> tags a certain commit (N is number)
+	// git tag vN.N.N -> tags a certain commit (N is number) -> use after git add and before git commit
 	//eg., git tag v1.4
 	//git show -> see tag data along with commit that was tagged eg., git show vN.N.N
-
+	//git origin push --tags -> stores tags on github
 }
