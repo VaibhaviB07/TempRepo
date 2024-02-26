@@ -123,6 +123,7 @@ func main() {
 	//go run -gcflags -m=2 main.go
 
 	//METHOD SETS
+	//IMPORTANT -> Method sets of a type determines the interfaces that the type implements
 	//it is the set of methods attached to a type.
 	//associated with both value and pointer types
 	//integral to how interfaces are implemented
