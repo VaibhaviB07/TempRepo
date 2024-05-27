@@ -1899,3 +1899,284 @@ int main()
 
     return 0;
 }
+
+//p1
+move(state(middle,onbox,middle,hasnot),
+   grasp,
+   state(middle,onbox,middle,has)).
+move(state(P,onfloor,P,H),
+   climb,
+   state(P,onbox,P,H)).
+move(state(P1,onfloor,P1,H),
+   drag(P1,P2),
+   state(P2,onfloor,P2,H)).
+move(state(P1,onfloor,B,H),
+   walk(P1,P2),
+   state(P2,onfloor,B,H)).
+canget(state(_,_,_,has)).
+canget(State1) :-
+   move(State1,_,State2),
+   canget(State2).
+   
+//p2
+% Initial state
+at(monkey, room).
+at(chair, room).
+at(stick, room).
+at(bananas, ceiling).
+
+% Define actions
+% Monkey can move from one place to another
+move(From, To, Object) :-
+    at(Object, From),
+    retract(at(Object, From)),
+    assert(at(Object, To)).
+
+% Monkey can climb on the chair
+climb_on_chair :-
+    at(monkey, room),
+    at(chair, room),
+    move(room, chair, monkey).
+
+% Monkey can reach the bananas with the stick
+reach_bananas :-
+    at(monkey, chair),
+    at(stick, monkey),
+    at(bananas, ceiling).
+
+% Solve the problem
+solve :-
+    climb_on_chair,
+    reach_bananas,
+    write('Monkey has the bananas!').
+
+% Example query to solve the problem
+% ?- solve.
+
+//p3
+% Dynamic facts to represent the state
+:- dynamic at/2, has/1.
+
+% Initial state of the monkey and bananas
+at(monkey, floor).
+at(box, floor).
+at(bananas, ceiling).
+has(bananas) :- false.
+
+% Actions that the monkey can perform
+% The monkey can climb the box
+climb_box :-
+    at(monkey, floor),
+    at(box, floor),
+    retract(at(monkey, floor)),
+    assert(at(monkey, box)),
+    write('Monkey climbs the box.'), nl.
+
+% The monkey can grasp the bananas
+grasp_bananas :-
+    at(monkey, box),
+    at(bananas, ceiling),
+    retract(at(bananas, ceiling)),
+    assert(has(bananas)),
+    write('Monkey grasps the bananas.'), nl.
+
+% Define the goal
+goal :- has(bananas).
+
+% Move function to achieve the goal
+move :-
+    goal,
+    write('Goal achieved!'), nl.
+
+move :-
+    \+ goal,
+    (climb_box ; grasp_bananas),
+    move.
+
+% Example query to run the program
+% To see if the monkey can achieve the goal, run:
+% ?- move.
+
+//p5
+% Define the symptoms for each condition
+symptom(cold, sneezing).
+symptom(cold, runny_nose).
+symptom(cold, cough).
+symptom(flu, fever).
+symptom(flu, chills).
+symptom(flu, fatigue).
+symptom(allergies, itchy_eyes).
+symptom(allergies, sneezing).
+symptom(allergies, runny_nose).
+
+% Define rules for diagnosing the conditions based on symptoms
+diagnose(X, cold) :- 
+    symptom(X, sneezing),
+    symptom(X, runny_nose),
+    symptom(X, cough).
+
+diagnose(X, flu) :- 
+    symptom(X, fever),
+    symptom(X, chills),
+    symptom(X, fatigue).
+
+diagnose(X, allergies) :- 
+    symptom(X, itchy_eyes),
+    symptom(X, sneezing),
+    symptom(X, runny_nose).
+
+% Query to diagnose a condition based on symptoms
+diagnose_condition(Symptoms, Condition) :-
+    findall(X, (member(Symptom, Symptoms), diagnose(Symptom, X)), Conditions),
+    list_to_set(Conditions, UniqueConditions),
+    length(UniqueConditions, NumConditions),
+    NumConditions = 1,
+    nth0(0, UniqueConditions, Condition).
+
+% Example usage:
+% diagnose_condition([fever, chills, fatigue], Condition).
+
+//p6
+% Define medical conditions and their associated symptoms
+has_symptom(john, fever).
+has_symptom(john, headache).
+has_symptom(mary, cough).
+has_symptom(mary, fatigue).
+has_symptom(jane, cough).
+has_symptom(jane, fatigue).
+
+
+% Define rules for diagnosing medical conditions
+diagnose_patient(Patient, Condition) :-
+    has_symptom(Patient, fever),
+    has_symptom(Patient, headache),
+    Condition = flu.
+diagnose_patient(Patient, Condition) :-
+    has_symptom(Patient, cough),
+    has_symptom(Patient, fatigue),
+    Condition = common_cold.
+diagnose_patient(_, unknown).
+
+% Query the expert system to diagnose patients
+?- diagnose_patient(john, X).
+?- diagnose_patient(jane, X).
+
+//p7
+destination(mumbai, asia, culture, beach, summer).
+destination(paris, europe, culture, moderate, spring).
+destination(tokyo, asia, culture, expensive, spring).
+destination(new_york, north_america, shopping, expensive, autumn).
+destination(dubai, middle_east, luxury, expensive, winter).
+destination(bangkok, asia, beach, moderate, summer).
+destination(rio_de_janeiro, south_america, beach, moderate, summer).
+destination(london, europe, culture, moderate, summer).
+destination(rome, europe, culture, moderate, spring).
+destination(sydney, australia, beach, expensive, summer).
+destination(amsterdam, europe, culture, moderate, spring).
+destination(hong_kong, asia, shopping, expensive, autumn).
+destination(cancun, north_america, beach, moderate, summer).
+destination(cairo, africa, culture, cheap, spring).
+destination(cape_town, africa, beach, moderate, summer).
+destination(mexico_city, north_america, culture, cheap, autumn).
+destination(moscow, europe, culture, moderate, winter).
+destination(athens, europe, culture, moderate, summer).
+destination(istanbul, europe, culture, moderate, spring).
+destination(mumbai, asia, culture, cheap, winter).
+destination(seoul, asia, culture, moderate, autumn).
+destination(bali, asia, beach, moderate, summer).
+
+recommend(Destination, Budget, Interest, Weather) :-
+    destination(Destination, _, Interest, Budget, Weather).
+
+start :- 
+    write('Welcome to Travel Planner'), nl,
+    ask_budget(Budget),
+    ask_interest(Interest),
+    ask_weather(Weather),
+    findall(Destination, recommend(Destination, Budget, Interest, Weather), Destinations),
+    display(Destinations).
+
+ask_budget(Budget):-
+    write("what is ur budget"), nl,
+    read(Budget).
+
+ask_interest(Interest):-
+    write("what is ur interest"), nl,
+    read(Interest).
+
+ask_weather(Weather):-
+    write("what is ur preferred weather"), nl,
+    read(Weather).
+
+display([]):-
+    write("No recommendations"), nl.
+
+display(Destinations) :- 
+    write("Recommendations:"), nl,
+    display_list(Destinations).
+
+display_list([]).
+    display_list([H|T]):-
+    write(' - '), write(H), nl, display_list(T).
+    
+//p8
+% Knowledge Base
+destination(paris, europe, culture, moderate, spring).
+destination(tokyo, asia, culture, expensive, spring).
+destination(new_york, north_america, shopping, expensive, autumn).
+destination(dubai, middle_east, luxury, expensive, winter).
+destination(bangkok, asia, beach, moderate, summer).
+destination(rio_de_janeiro, south_america, beach, moderate, summer).
+destination(london, europe, culture, moderate, summer).
+destination(rome, europe, culture, moderate, spring).
+destination(sydney, australia, beach, expensive, summer).
+destination(amsterdam, europe, culture, moderate, spring).
+destination(hong_kong, asia, shopping, expensive, autumn).
+destination(cancun, north_america, beach, moderate, summer).
+destination(cairo, africa, culture, cheap, spring).
+destination(cape_town, africa, beach, moderate, summer).
+destination(mexico_city, north_america, culture, cheap, autumn).
+destination(moscow, europe, culture, moderate, winter).
+destination(athens, europe, culture, moderate, summer).
+destination(istanbul, europe, culture, moderate, spring).
+destination(mumbai, asia, culture, cheap, winter).
+destination(seoul, asia, culture, moderate, autumn).
+destination(bali, asia, beach, moderate, summer).
+
+% Rules
+recommend(Destination, Interest, Budget, Weather):-
+    destination(Destination, _, Interest, Budget, Weather).
+
+% User Interface
+start:-
+    write("Welcome to travel"), nl,
+    write("Please answer the following questions for recommendation."), nl, 
+    ask_budget(Budget),
+    ask_interest(Interest),
+    ask_weather(Weather),
+    findall(Destination, recommend(Destination, Interest, Budget, Weather), Destinations),
+    display(Destinations).
+
+ask_budget(Budget):-
+    write("What's your budget? "), nl,
+    read(Budget).
+
+ask_interest(Interest):-
+    write("What's your interest? "), nl,
+    read(Interest).
+
+ask_weather(Weather):-
+    write("What weather do u like? "), nl,
+    read(Weather).
+
+display([]):-
+    write("No recommendations"), nl.
+
+display(Destinations) :- 
+    write("Recommendations:"), nl,
+    display_list(Destinations).
+
+display_list([]).
+display_list([H|T]):-
+    write("- "), write(H), nl,
+    display_list(T).
